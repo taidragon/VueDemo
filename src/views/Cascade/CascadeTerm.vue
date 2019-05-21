@@ -25,7 +25,7 @@ export default {
   methods: {
     /* 获取省市县级联菜单 */
     getMenu () {
-      this.axios.get('/cascade.json')
+      this.axios.get('./cascade.json')
         .then((response) => {
           console.log(response.data.data)
           this.listData = response.data.data
