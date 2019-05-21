@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "core-js": "^2.6.5",
+    "esri-loader": "^2.9.2",
     "iview": "^3.3.3",
     "js-cookie": "^2.2.0",
     "vue": "^2.6.6",

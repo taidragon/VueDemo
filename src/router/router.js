@@ -14,6 +14,14 @@ export default new Router({
       }
     },
     {
+      path: '/arcgis',
+      name: 'arcgis',
+      component: () => import('../views/Arcgis/Arcgis.vue'),
+      meta: {
+        title: '行政区划罗列查询框'
+      }
+    },
+    {
       path: '/testPage',
       name: 'testPage',
       component: () => import('../components/TestPage1.vue'),
