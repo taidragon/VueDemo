@@ -4,6 +4,13 @@
   </div>
 </template>
 
+<script>
+import config from '@/views/Arcgis/mapConfig'
+import { loadCss } from 'esri-loader'
+loadCss(config.esriCss)
+export default {}
+</script>
+
 <style lang="scss">
   body,html{
     height:100%;

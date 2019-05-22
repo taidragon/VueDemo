@@ -1,52 +1,73 @@
-/**
- * @Description: 根据行政区划获取等级
- * @author 张淼
- * @date 2019/4/11
-*/
-export const getLevel = code => {
-}
+import arcgisPackage from './arcgisTools'
+// 天地图影像地图
+export const tdtlayer = async () => {
+  let BaseTileLayer = await arcgisPackage.BaseTileLayer
+  let Request = await arcgisPackage.Request
+  let TDT = await BaseTileLayer.createSubclass({
+    properties: {
+      urlTemplate: null
+    },
+    getTileUrl: function (level, row, col) {
+      var url = 'http://t' + col % 8 + '.tianditu.gov.cn/DataServer?T=img_w&tk=b7bfb591f7435f530314cff9a16d40e3&x=' + col + '&y=' + row + '&l=' + level
+      // var url = "http://t0.tianditu.gov.cn/cva_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX="+level+"&TILEROW="+row+"&TILECOL="+col+"&tk=12b886b3d0f324bd6032c29503972e7c";
+      return url
+    },
+    fetchTile: function (level, row, col) {
+      var url = this.getTileUrl(level, row, col)
+      return Request(url, {
+        responseType: 'image'
+      })
+        .then(function (response) {
+          var image = response.data
+          var width = this.tileInfo.size[0]
+          var height = this.tileInfo.size[0]
 
-/* 将数字每三位加 ，  */
-export const toThousands = (num) => {
-  var result = ''
-  var counter = 0
-  num = (num || 0).toString()
-  for (var i = num.length - 1; i >= 0; i--) {
-    counter++
-    result = num.charAt(i) + result
-    if (!(counter % 3) && i !== 0) {
-      result = ',' + result
+          var canvas = document.createElement('canvas')
+          var context = canvas.getContext('2d')
+          canvas.width = width
+          canvas.height = height
+
+          context.drawImage(image, 0, 0, width, height)
+
+          return canvas
+        }.bind(this))
     }
-  }
-  return result
+  })
+  let tdtylayer = await new TDT()
+  return tdtylayer
 }
+// 天地图影像标注图层
+export const tdtNoteslayer = async () => {
+  let BaseTileLayer = await arcgisPackage.BaseTileLayer
+  let Request = await arcgisPackage.Request
+  let TDT1 = BaseTileLayer.createSubclass({
+    properties: {
+      urlTemplate: null
+    },
+    getTileUrl: function (level, row, col) {
+      var url = 'http://t' + col % 8 + '.tianditu.gov.cn/DataServer?T=cia_w&tk=12b886b3d0f324bd6032c29503972e7c&x=' + col + '&y=' + row + '&l=' + level
+      // var url = "http://t0.tianditu.gov.cn/cva_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX="+level+"&TILEROW="+row+"&TILECOL="+col+"&tk=12b886b3d0f324bd6032c29503972e7c";
+      return url
+    },
+    fetchTile: function (level, row, col) {
+      var url = this.getTileUrl(level, row, col)
+      return Request(url, {
+        responseType: 'image'
+      })
+        .then(function (response) {
+          var image = response.data
+          var width = this.tileInfo.size[0]
+          var height = this.tileInfo.size[0]
 
-/* 日期格式装换 */
-export const renderTime = date => {
-  if (date === null) {
-    return ''
-  }
-  var d = new Date(date)
-  var times = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
-  return times
-}
-
-/* 位置形状汉化 */
-export const toChinese = text => {
-  switch (text) {
-    case 'point':
-      return '点'
-    case 'polyline':
-      return '线'
-    case 'polygon':
-      return '面'
-  }
-}
-
-/* 位置形状汉化 */
-export const cacuLonLat = a => {
-  let degree = parseInt(a)
-  let min = parseInt((a - degree) * 60)
-  let sec = ((a - degree) * 3600 - min * 60).toFixed(2)
-  return degree + '°' + min + '′' + sec + '″'
+          var canvas = document.createElement('canvas')
+          var context = canvas.getContext('2d')
+          canvas.width = width
+          canvas.height = height
+          context.drawImage(image, 0, 0, width, height)
+          return canvas
+        }.bind(this))
+    }
+  })
+  let tdtylayer1 = new TDT1()
+  return tdtylayer1
 }
