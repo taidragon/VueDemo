@@ -18,7 +18,7 @@ export default new Router({
       name: 'arcgis',
       component: () => import('../views/Arcgis/Arcgis.vue'),
       meta: {
-        title: '行政区划罗列查询框'
+        title: '地图'
       }
     },
     {

@@ -30,7 +30,9 @@ const __arcgisUrl = {
   Geoprocessor: 'esri/tasks/Geoprocessor',
   FeatureSet: 'esri/tasks/support/FeatureSet',
   ImageParameters: 'esri/layers/support/ImageParameters',
-  Draw: 'esri/views/2d/draw/Draw'
+  Draw: 'esri/views/2d/draw/Draw',
+  Fullscreen: 'esri/widgets/Fullscreen',
+  BasemapGallery: 'esri/widgets/BasemapGallery'
 }
 
 // 不暴漏在外的存储对象
